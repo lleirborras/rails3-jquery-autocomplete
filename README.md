@@ -134,6 +134,16 @@ Passing an array of attributes/column names to this option will fetch and return
       autocomplete :brand, :name, :extra_data => [:slogan]
     end
 
+#### :full_model
+
+By default, your search will only return the required columns from the database needed to populate your form, namely id and the column you are searching (name, in the above example).
+
+Passing true to this option will return all column from the table.
+
+    class ProductsController < Admin::BaseController
+      autocomplete :brand, :name, :full_model => true
+    end
+
 #### :display_value
 
 If you want to display a different version of what you're looking for, you can use the :display_value option.
@@ -165,6 +175,21 @@ Only the object's id and the column you are searching on will be returned in JSO
 #### :column_name
    By default autocomplete uses method name as column name. Now it can be specified using column_name options
    `:column_name => 'name'`
+
+#### :where
+If you want to add extra conditions to search add the conditions as a parameter.
+
+    class ProductsController < Admin::BaseController
+      autocomplete :brand, :name, :where => {:id => 3}
+    end
+
+#### :custom_search
+If you want to execute a custom search with arel or Squeel, just pass it as string.
+
+    class ProductsController < Admin::BaseController
+      autocomplete :brand, :name, :custom_search => 'where{(name =~ "%#{term}%") | (code =~"%#{term}%")}'
+    end
+
 
 #### json encoder
 Autocomplete uses Yajl as JSON encoder/decoder, but you can specify your own
